@@ -1,6 +1,8 @@
 # password strength checker
 
-import re 
+import tkinter as tk
+from tkinter import messagebox
+import re
 
 # password strength check conditions:
 # min 8 chars, digit, uppercase, lowercase, special char
@@ -26,7 +28,7 @@ def check_password_strength(password):
 
     return "Strong: Your password is secure!"
 
-def password_checker():
+def evaluate_password():
     """
     Main function to take user input and check password strength.
     """
@@ -42,7 +44,23 @@ def password_checker():
         result = check_password_strength(password)
         print(result)
 
+root = tk.Tk()
+root.title("Password Strength Checker")
+root.geometry("500x400")
+root.configure(bg="#f4f4f4")
 
-# Run the password checker
-if __name__ == "__main__":
-    password_checker()
+
+label = tk.Label(root, text="Enter your password:", font=("Arial", 12, "bold"), bg="#f4f4f4")
+label.pack(pady=10)
+
+entry = tk.Entry(root, show="*", width=30, font=("Arial", 12))
+entry.pack(pady=5)
+
+check_button = tk.Button(root, text="Check Strength", command=evaluate_password, font=("Arial", 12, "bold"), bg="#4CAF50", fg="white", padx=10, pady=5)
+check_button.pack(pady=10)
+
+result_label = tk.Label(root, text="", font=("Arial", 12, "bold"), bg="#f4f4f4")
+result_label.pack(pady=10)
+
+
+root.mainloop()
