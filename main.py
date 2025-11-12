@@ -30,37 +30,81 @@ def check_password_strength(password):
 
 def evaluate_password():
     """
-    Main function to take user input and check password strength.
+    GUI function to check password strength and display result.
     """
-    print("Welcome to the Password Strength Checker!")
+    password = entry.get()
+    
+    if not password:
+        messagebox.showwarning("Input Error", "Please enter a password!")
+        return
+    
+    result = check_password_strength(password)
+    result_label.config(text=result)
+    
+    # Color code the result based on strength
+    if "Strong" in result:
+        result_label.config(fg="green")
+    elif "Medium" in result:
+        result_label.config(fg="orange")
+    else:
+        result_label.config(fg="red")
 
-    while True:
-        password = input("\nEnter your password (or type 'exit' to quit): ")
+def clear_fields():
+    """
+    Clear the password entry and result label.
+    """
+    entry.delete(0, tk.END)
+    result_label.config(text="")
+    result_label.config(fg="black")
 
-        if password.lower() == "exit":
-            print("Thank you for using the Password Strength Checker! Goodbye!")
-            break
-
-        result = check_password_strength(password)
-        print(result)
-
+# Create GUI
 root = tk.Tk()
 root.title("Password Strength Checker")
 root.geometry("500x400")
 root.configure(bg="#f4f4f4")
 
+# Title Label
+title_label = tk.Label(root, text="Password Strength Checker", font=("Arial", 14, "bold"), bg="#f4f4f4", fg="#333333")
+title_label.pack(pady=15)
 
+# Instructions Label
+instructions_label = tk.Label(root, text="Enter a password to check its strength", font=("Arial", 10), bg="#f4f4f4", fg="#666666")
+instructions_label.pack(pady=5)
+
+# Password Entry Label
 label = tk.Label(root, text="Enter your password:", font=("Arial", 12, "bold"), bg="#f4f4f4")
 label.pack(pady=10)
 
+# Password Entry Field
 entry = tk.Entry(root, show="*", width=30, font=("Arial", 12))
 entry.pack(pady=5)
 
-check_button = tk.Button(root, text="Check Strength", command=evaluate_password, font=("Arial", 12, "bold"), bg="#4CAF50", fg="white", padx=10, pady=5)
-check_button.pack(pady=10)
+# Button Frame for better layout
+button_frame = tk.Frame(root, bg="#f4f4f4")
+button_frame.pack(pady=15)
 
+# Check Button
+check_button = tk.Button(button_frame, text="Check Strength", command=evaluate_password, font=("Arial", 12, "bold"), bg="#4CAF50", fg="white", padx=15, pady=5)
+check_button.pack(side=tk.LEFT, padx=5)
+
+# Clear Button
+clear_button = tk.Button(button_frame, text="Clear", command=clear_fields, font=("Arial", 12, "bold"), bg="#ff9800", fg="white", padx=15, pady=5)
+clear_button.pack(side=tk.LEFT, padx=5)
+
+# Result Label
 result_label = tk.Label(root, text="", font=("Arial", 12, "bold"), bg="#f4f4f4")
-result_label.pack(pady=10)
+result_label.pack(pady=20)
 
+# Criteria Label
+criteria_text = """Password Criteria:
+✓ Minimum 8 characters
+✓ At least one number
+✓ At least one uppercase letter
+✓ At least one lowercase letter
+✓ At least one special character (!@#$%^&*...)"""
 
-root.mainloop()
+criteria_label = tk.Label(root, text=criteria_text, font=("Arial", 9), bg="#f4f4f4", fg="#666666", justify=tk.LEFT)
+criteria_label.pack(pady=10)
+
+if __name__ == "__main__":
+    root.mainloop()
